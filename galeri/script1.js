@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   // Trigger manual saat user klik di mana saja (backup jika autoplay gagal)
-document.addEventListener('click', () => {
+document.addEventListener('touchstart', () => {
     const audio = document.getElementById('bg-music');
     if (audio.paused) {
       audio.play();
