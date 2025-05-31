@@ -35,21 +35,26 @@ function createHeart() {
 setInterval(createHeart, 500); // 1 hati tiap 0.5 detik
 
 
+// Autoplay saat halaman dibuka, backup trigger jika autoplay gagal
 window.addEventListener('DOMContentLoaded', () => {
     const audio = document.getElementById('bg-music');
-  
-    // Coba paksa autoplay saat halaman dimuat
-    setTimeout(() => {
-      audio.play().catch((err) => {
-        console.warn("Autoplay gagal, coba klik di mana saja untuk memulai musik.");
-      });
-    }, 100); // kasih jeda 0.1 detik biar lebih stabil
-  });
 
-  // Trigger manual saat user klik di mana saja (backup jika autoplay gagal)
-document.addEventListener('touchstart', () => {
-    const audio = document.getElementById('bg-music');
-    if (audio.paused) {
-      audio.play();
+    // Coba autoplay
+    setTimeout(() => {
+        audio.play().catch(() => {
+            console.warn("Autoplay gagal, coba interaksi (sentuh, klik, atau scroll) untuk memulai musik.");
+        });
+    }, 100);
+
+    // Fungsi trigger manual
+    function tryPlayAudio() {
+        if (audio.paused) {
+            audio.play();
+        }
     }
-  });
+
+    // Tambahkan event listener untuk berbagai interaksi user
+    document.addEventListener('touchstart', tryPlayAudio, { once: true });
+    document.addEventListener('click', tryPlayAudio, { once: true });
+    document.addEventListener('scroll', tryPlayAudio, { once: true });
+});
